@@ -1,0 +1,2 @@
+FLASK_APP=FilmReviewSite
+FLASK_ENV=development
