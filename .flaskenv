@@ -1,2 +1,2 @@
-FLASK_APP=FilmReviewSite
+FLASK_APP=FilmReviewSite/main:create_app
 FLASK_ENV=development
