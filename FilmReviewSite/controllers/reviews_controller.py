@@ -12,7 +12,7 @@ def review_index():
 
 @reviews.route('/reviews/',methods=["POST"])
 def create_review():
-    new_review=review_index.load(request.json)
+    new_review=review_schema.load(request.json)
     db.session.add(new_review)
     db.session.commit()
     return jsonify(review_schema.dump(new_review))

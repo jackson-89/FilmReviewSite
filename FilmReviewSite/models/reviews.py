@@ -1,5 +1,5 @@
 from main import db
-
+# Tells the ORM what tables should exist
 class Review(db.Model):
         __tablename__="reviews"
         review_id = db.Column(db.Integer, primary_key=True)
@@ -8,9 +8,4 @@ class Review(db.Model):
         def __init__(self, review_name):
             self.review_name = review_name
 
-        @property
-        def serialize(self):
-            return {
-                "review_id": self.review_id,
-                "review_name":self.review_name
-            }    
+       
