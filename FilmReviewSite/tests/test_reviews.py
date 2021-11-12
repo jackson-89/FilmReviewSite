@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 import unittest
 from main import create_app
 from dotenv import load_dotenv
@@ -18,8 +19,16 @@ class TestReviews(unittest.TestCase):
         data = response.get_json()
 
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(data, list)
+        self.assertIn(b'<h1>Review Index</h1>', response.data)
 
     def test_create_bad_review(self):
-        response = self.client.post("/reviews/", json={"course_name":""})
+        response = self.client.post("/reviews/", data={"course_name":""})
         self.assertEqual(response.status_code, 400)
+
+    def test_no_data(self):
+        response = self.client.post("/reviews/", data={"":""})
+        self.assertEqual(response.status_code, 400)
+
+        
+
+    

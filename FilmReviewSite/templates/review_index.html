@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <br/>
+    <div>
+        <h2>New Review</h2>
+        <div>
+            <form action ="/reviews/" method="POST">
+                <input type="text" name="review_name" placeholder="Review Name..."/>
+                <button>Create</button>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <h2>Review List</h2>
+    {% for review in page_data.reviews %}
+        <a href="/reviews/{{ review.review_id }}/">{{ review.review_name }}</a></br>
+    {% endfor %}
+{% endblock %}
