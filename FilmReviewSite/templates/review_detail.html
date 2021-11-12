@@ -4,12 +4,12 @@
     <h2>{{ page_data.review.review_name }}</h2>
     <p>Review ID: {{ page_data.review.review_id }}</p>
 
-    <form action="/reviews/{{ page_data.review.review_id }}/",method="POST">
+    <form action="/reviews/{{ page_data.review.review_id }}/" method="POST">
         <input type="text" name="review_name" placeholder="Review Name..."/>
         <button>Update</button>
     </form>
     </br></br>
-    <form action = "/reviews/{{ page_data.review.review_id }}/delete/",method="POST">
+    <form action = "/reviews/{{ page_data.review.review_id }}/delete/" method="POST">
         <button>DELETE COURSE</button>
     </form>
 

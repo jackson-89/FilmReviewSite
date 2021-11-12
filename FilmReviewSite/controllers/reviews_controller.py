@@ -14,7 +14,7 @@ def home_page():
 
 
 @reviews.route('/reviews/',methods=["GET"])
-def get_courses():
+def get_reviews():
     data = {
         "page_title": "Review Index",
         "reviews": reviews_schema.dump(Review.query.all())
@@ -27,7 +27,7 @@ def create_review():
     new_review=review_schema.load(request.form)
     db.session.add(new_review)
     db.session.commit()
-    return redirect(url_for("reviews.get_courses"))
+    return redirect(url_for("reviews.get_reviews"))
 
 
 @reviews.route('/reviews/<int:id>/',methods=["GET"])
@@ -63,4 +63,5 @@ def delete_review(id):
     db.session.delete(review)
     db.session.commit()
    
-    return redirect(url_for("reviews.get_courses"))
+    return redirect(url_for("reviews.get_reviews"))
+
