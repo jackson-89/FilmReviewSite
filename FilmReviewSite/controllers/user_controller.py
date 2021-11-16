@@ -11,7 +11,7 @@ def load_user(user):
 
 @lm.unauthorized_handler
 def unauthorized():
-    return redirect('/users/login')
+    return redirect('/users/login/')
 
 users = Blueprint('users',__name__)
 
@@ -54,7 +54,7 @@ def log_in():
 def user_detail():
     if request.method == "GET":
         data = {"page_title":"Account Details"}
-        return render_template("user_detail.html",page_data=data)
+        return render_template("user_details.html",page_data=data)
 
     user = User.query.filter_by(id=current_user.id)
     updated_fields = user_schema.dump(request.form)

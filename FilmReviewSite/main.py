@@ -29,7 +29,7 @@ def create_app():
         app.register_blueprint(controller)
 
     @app.errorhandler(ValidationError)
-    def handle_bad_req(error):
+    def handle_bad_request(error):
         return (jsonify(error.messages), 400)
 
     return app

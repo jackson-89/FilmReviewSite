@@ -5,9 +5,6 @@ from marshmallow import fields, exceptions,validate
 from werkzeug.security import generate_password_hash
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model=User
-        load_instance=True
     id = auto_field(dump_only=True)
     name = auto_field(required=True, validate=validate.Length(1))
     email = auto_field(required=True, validate=validate.Email())
@@ -21,6 +18,11 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         if len(password) > 6:
             return generate_password_hash(password,method="sha256")
         raise exceptions.ValidationError("Password must be at least 6 characters")
+    
+    class Meta:
+        model=User
+        load_instance=True
+        
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)

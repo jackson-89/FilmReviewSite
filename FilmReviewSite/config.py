@@ -6,12 +6,7 @@ class Config(object):
     
     @property
     def SQLALCHEMY_DATABASE_URI(self):
-        URI_VARS = [
-            "DB_USER", 
-            "DB_PASS", 
-            "DB_NAME", 
-            "DB_DOMAIN"
-        ]
+        URI_VARS = ["DB_USER", "DB_PASS", "DB_NAME", "DB_DOMAIN"]
         uri_dict = {item: os.environ.get(item) for item in URI_VARS}
         for key in URI_VARS:
             if uri_dict[key] is None:
