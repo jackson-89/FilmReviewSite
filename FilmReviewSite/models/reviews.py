@@ -4,8 +4,10 @@ class Review(db.Model):
         __tablename__="reviews"
         review_id = db.Column(db.Integer, primary_key=True)
         review_name = db.Column(db.String(80), unique=True, nullable=False)
+        description=db.Column(db.String(200),default="No description provided")
 
-        def __init__(self, review_name):
-            self.review_name = review_name
+        @property
+        def image_filename(self):
+            return f"review_images/{self.review_id}.png"
 
        

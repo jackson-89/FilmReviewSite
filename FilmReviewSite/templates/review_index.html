@@ -6,13 +6,31 @@
         <div>
             <form action ="/reviews/" method="POST">
                 <input type="text" name="review_name" placeholder="Review Name..."/>
+                <input type="text" name="description" placeholder="Description..."/> 
                 <button>Create</button>
             </form>
         </div>
     </div>
     <br/>
     <h2>Review List</h2>
-    {% for review in page_data.reviews %}
-        <a href="/reviews/{{ review.review_id }}/">{{ review.review_name }}</a></br>
-    {% endfor %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Review Name</th>
+                <th>Review Description</th>
+            </tr>
+        </thead>
+        {% for review in page_data.reviews %}
+        <tbody>
+            <tr>
+                <td>
+                    <a href="/reviews/{{ review.review_id }}/">{{ review.review_name }}</a>
+                </td>
+                <td>
+                    {{ review.description }}
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
 {% endblock %}

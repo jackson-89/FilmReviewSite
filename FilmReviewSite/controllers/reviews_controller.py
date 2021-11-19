@@ -1,7 +1,9 @@
-from flask import Blueprint, jsonify,request,render_template,redirect,url_for
+from flask import Blueprint, jsonify,request,render_template,redirect,url_for,current_app
 from main import db
 from models.reviews import Review
 from schemas.reviews_schema import review_schema, reviews_schema
+from flask_login  import login_required,current_user
+import boto3
 
 reviews = Blueprint('reviews', __name__)
 
@@ -33,9 +35,21 @@ def create_review():
 @reviews.route('/reviews/<int:id>/',methods=["GET"])
 def get_review(id):
     review=Review.query.get_or_404(id)
+
+    s3_client=boto3.client("s3")
+    bucket_name=current_app.config["AWS_S3_BUCKET"]
+    image_url = s3_client.generate_presigned_url(
+        'get_object',
+        Params={
+            "Bucket":bucket_name,
+            "Key": review.image_filename
+        },
+        ExpiresIn=100
+    )
     data = {
         "page_title":"Review Detail",
-        "review":review_schema.dump(review)
+        "review":review_schema.dump(review),
+        "image":image_url
     }
     return render_template("review_detail.html",page_data=data)
 

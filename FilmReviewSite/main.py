@@ -3,12 +3,14 @@ from flask import Flask,request,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow.exceptions import ValidationError
+from flask_migrate import Migrate
 from flask_login import LoginManager
 
 
 db = SQLAlchemy()
 ma = Marshmallow()
 lm = LoginManager()
+migrate = Migrate()
 
 def create_app():
     # Create the flask app object
@@ -19,6 +21,7 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
     lm.init_app(app)
+    migrate.init_app(app,db)
 
     from commands import db_commands
     app.register_blueprint(db_commands)
