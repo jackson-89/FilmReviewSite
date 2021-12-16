@@ -7,6 +7,14 @@ class ReviewsSchema(ma.SQLAlchemyAutoSchema):
     review_id = auto_field(dump_only=True)
     review_name = auto_field(required=True, validate=Length(min=1))
     description = auto_field(validate=Length(min=1))
+    creator = ma.Nested(
+        "UserSchema",
+        only=("id","name","email")
+    )
+    students=ma.Nested(
+        "UserSchema",
+        only=("id","name","email")
+    ) 
 
     class Meta:
         model = Review

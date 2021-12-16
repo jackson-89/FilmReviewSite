@@ -3,10 +3,10 @@ from pathlib import Path
 from models.reviews import Review
 import boto3
 
-review_images = Blueprint('review_images',__name__)
+review_images = Blueprint('review_images', __name__)
 
-@review_images.route("/reviews/<int:id>/image/",methods=["POST"])
-def upload_image(id):
+@review_images.route("/reviews/<int:id>/image/", methods=["POST"])
+def update_image(id):
 
     review  = Review.query.get_or_404(id)
 
@@ -14,7 +14,7 @@ def upload_image(id):
 
         image = request.files["image"]
 
-        if Path(image.filename).suffix != ".PNG":
+        if Path(image.filename).suffix != ".png":
             return abort(400, description="Invalid file type")
 
         bucket=boto3.resource("s3").Bucket(current_app.config["AWS_S3_BUCKET"])

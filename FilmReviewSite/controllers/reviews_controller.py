@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify,request,render_template,redirect,url_for,current_app
+from flask import Blueprint, jsonify,request,render_template,redirect,url_for,current_app,abort
 from main import db
 from models.reviews import Review
 from schemas.reviews_schema import review_schema, reviews_schema
@@ -19,14 +19,18 @@ def home_page():
 def get_reviews():
     data = {
         "page_title": "Review Index",
-        "reviews": reviews_schema.dump(Review.query.all())
+        "reviews": reviews_schema.dump(Review.query.order_by(Review.creator_id).all())
     }
     return render_template("review_index.html", page_data = data)
 
 
 @reviews.route('/reviews/',methods=["POST"])
+@login_required
 def create_review():
     new_review=review_schema.load(request.form)
+
+    new_review.creator=current_user
+
     db.session.add(new_review)
     db.session.commit()
     return redirect(url_for("reviews.get_reviews"))
@@ -55,9 +59,12 @@ def get_review(id):
 
 #put patch
 @reviews.route("/reviews/<int:id>/", methods=["POST"])
+@login_required
 def update_review(id):
-
     review=Review.query.filter_by(review_id=id)
+
+    if current_user.id != review.first().creator_id:
+        abort(403, "You do not have permission to alter this review!")
 
     updated_fields = review_schema.dump(request.form)
     if updated_fields:
@@ -70,10 +77,30 @@ def update_review(id):
     }
     return render_template("review_detail.html",page_data=data)
 
+@reviews.route("/reviews/<int:id>/enrol/", methods=["POST"])
+@login_required
+def enrol_in_course(id):
+    review=Review.query.get_or_404(id)
+    review.students.append(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
+
+@reviews.route("/reviews/<int:id>/drop/", methods=["POST"])
+@login_required
+def drop_course(id):
+    review=Review.query.get_or_404(id)
+    review.students.remove(current_user)
+    db.session.commit()
+    return redirect(url_for('users.user_detail'))
 
 @reviews.route("/reviews/<int:id>/delete/",methods=["POST"])
+@login_required
 def delete_review(id):
     review=Review.query.get_or_404(id)
+
+    if current_user.id != review.creator_id:
+        abort(403, "You do not have permission to delete this review!")
+        
     db.session.delete(review)
     db.session.commit()
    

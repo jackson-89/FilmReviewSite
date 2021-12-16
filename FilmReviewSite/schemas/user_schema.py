@@ -13,6 +13,10 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_only=True,
         deserialize="load_password"
     )
+    enrolled_courses=ma.Nested(
+        "ReviewsSchema",
+        only=("review_id","review_name")
+    )
 
     def load_password(self, password):
         if len(password) > 6:

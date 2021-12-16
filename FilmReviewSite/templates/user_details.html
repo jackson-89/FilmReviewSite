@@ -13,6 +13,13 @@
     </form>
 
     <p>User is admin: {{ current_user.is_admin }}</p>
+    <br/><br/>
+    <h3>Enrolled Courses:</h3>
+    <ul>
+        {% for review in current_user.enrolled_courses %}
+            <li><a href="/reviews/{{ review.review_id }}/">{{ review.review_name }}</a></li>
+        {% endfor %}
+    </ul>
 </div>
 
 {% endblock %}
